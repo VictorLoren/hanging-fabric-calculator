@@ -14,12 +14,12 @@ def feetToYards(inFeet):
 def yardsToFeet(inYards):
     return inYards * 3.0
 
-#widthOfStrand is how wide the tule piece (in feet)
+#widthOfStrand is how wide the tulle piece (in feet)
 def findTotal(widthOfStrand,z=0,printTotal=False):
     '''
     Find total in yards.
     Input:
-        widthOfStrand (number of feet, width of tule)
+        widthOfStrand (number of feet, width of tulle)
         z=0 (how many feet it will "drape" down linearly)
         printTotal=False (Friendly print)
 
@@ -73,4 +73,4 @@ def totalCost(costPerYard,widthOfStrandInFeet,drapingInFeet,printTotal=False):
     print "Total length %.2f yards for $%.2f (@ $%.2f per yard)" %(total,cost,costPerYard)
     return cost
 
-print "Imported 'tule.py'"
+print "Imported 'tulle'"
