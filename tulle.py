@@ -3,25 +3,39 @@
 # RectRoom object to hang fabric in
 class RectRoom(object):
     '''
-        RectRoom(length,width) initiates object that represents a rectangular
-        room in which fabric will be hung in.
+        RectRoom(length,width,height,units='feet') initiates object that represents a 
+        rectangular room in which fabric will be hung in.
         
         Automatically declares a midpoint of the room to hang fabric from as a 
         tuple (x,y): self.hangFrom
     '''
-    def __init__(self,length,width):
+    def __init__(self,length,width,height,units='feet'):
         self.length = length
         self.width  = width
+        self.height = height
         self.hangFrom  = (width/2.0,length/2.0)
+        self.units  = units
+
+# Hangpoint object to represent where to hang material from/to
+class Hangpoint(object):
+    #
+    def __init__(self,x,y,z=0):
+       # Assign coordinates of the point for all three axes
+       (self.x, self.y, self.z) = (x,y,z)
+       # Shortcut to full position coordinates
+       self.position = (x,y,z)
+    
+
+# Define a RectRoom (in feet)
+gym = RectRoom(length=92,width=68,height=22)
+#lengths are in feet
+L = 92; W=68; H=22; MidXY=(W/2,L/2)
 
 def calcLength(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
     # Basic calculation of strand length (assume a straight line) 
     strandLength = (x**2 + y**2 + z**2)**0.5
     return strandLength
-
-#lengths are in feet
-L = 92; W=68; H=22; MidXY=(W/2,L/2)
 
 def feetToYards(inFeet):
     return inFeet/3.0
