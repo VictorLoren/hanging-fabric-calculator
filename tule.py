@@ -28,17 +28,22 @@ def findTotal(widthOfStrand,z=0,printTotal=False):
     strandLengths = []
     #Total length
     total = 0
-    i=0
+
     #find along width
     alongWidth = 0
     while(alongWidth <= W):
         newX,newY = (MidXY[0] - alongWidth,MidXY[1]-L)
-        total += calcLength(newX,newY,z)
+        
+        # Length of strand needed (in yards)
+        strandLength = calcLength(newX,newY,z)
+        # Add Break point length
+        strandLengths.append(strandLength)
+        # Total length
+        total += strandLength 
         alongWidth += widthOfStrand
-        # print "width on %d: %f %f" %(i,alongWidth,total); i+=1
 
     #find along length, around gym
-    alongLength = 0; i=0
+    alongLength = 0 
     while(alongLength <= L):
         newX,newY = (MidXY[0] - W,MidXY[1]- alongLength)
         # Length of strand needed (in yards)
@@ -48,7 +53,7 @@ def findTotal(widthOfStrand,z=0,printTotal=False):
         # Total length
         total += strandLength
         alongLength += widthOfStrand
-        # print "length on %d: %f %f" %(i,alongLength,total); i+=1
+
     #convert to yards
     total = feetToYards(total)
     strandLengths = map(feetToYards,strandLengths)
