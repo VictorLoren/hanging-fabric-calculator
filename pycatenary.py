@@ -1,11 +1,9 @@
-# !usr/bin/env python
 # catenary calculation, re-written in python - NO Elasticity!!!
 
 import math
 import numpy as np 
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve  
-#from inout import write_file
 
 
 def cat(a):
@@ -63,46 +61,19 @@ xa=La
 xp=0
 xb=-Lb
 
-# writting results to file
-#fname='catenary_res.txt'
-#fn=open(fname, 'a')
-print fn, "Horizontal Distance between supports in meters: ", round(L,3)
-print fn, "Catenary length in meters: ", round(S,3)
-print fn, "Vertical Distance Between supports in meters: ", round(d,3)
-print fn, "Unit Weight of Catenary line in kg/m: ", round(w,3)
-print fn, "Elevation of higher support (A) from reference plane in meters: ", round(za,3)
-print fn, "\Catenary coef.: ", round(a,5)
-print fn, "Horizontal tension in kg (constant along line: ", round(H,3)
-print fn, "Vertical tension in A in kg: ", round(Va,3)
-print fn, "Total tension in A in kg: ", round(TA,3)
-print fn, "Total tension in B in kg: ", round(TB,3)
-print fn, "Inclination angle from vertical at A in radians: ", round(ThetA,3)
-print fn, "Inclination angle from vertical at B in radians: ", round(ThetB,3)
-print fn, "Inclination angle from vertical at A in degrees: ", round(ThetAd,3)
-print fn, "Inclination angle from vertical at B in degrees: ", round(ThetBd,3)
-#fn.close()
+# printing results to file
+print "Horizontal Distance between supports in meters: ", round(L,3)
+print "Catenary length in meters: ", round(S,3)
+print "Vertical Distance Between supports in meters: ", round(d,3)
+print "Unit Weight of Catenary line in kg/m: ", round(w,3)
+print "Elevation of higher support (A) from reference plane in meters: ", round(za,3)
+print "\Catenary coef.: ", round(a,5)
+print "Horizontal tension in kg (constant along line: ", round(H,3)
+print "Vertical tension in A in kg: ", round(Va,3)
+print "Total tension in A in kg: ", round(TA,3)
+print "Total tension in B in kg: ", round(TB,3)
+print "Inclination angle from vertical at A in radians: ", round(ThetA,3)
+print "Inclination angle from vertical at B in radians: ", round(ThetB,3)
+print "Inclination angle from vertical at A in degrees: ", round(ThetAd,3)
+print "Inclination angle from vertical at B in degrees: ", round(ThetBd,3)
 
-
-# graphing catenary curve - matplotlib & writting coordinates in file 
-#xinc=L/100
-#y=[]
-#xc=[]
-#fncoords="catenary_coords.txt"
-#fn=open(fncoords, "a")
-#
-#for x in np.arange (xb, xa+xinc, xinc):
-#	ycal=a*math.cosh(x/a)
-#	fn.write("\n")
-#	fn.write(str(round(x,3)))
-#	fn.write("\t")
-#	fn.write(str(round(ycal[0],3)))
-#	y.append(ycal)
-#	xc.append(x)
-#	fn.close()
-#
-#	# plotting, finally 
-#	plt.plot(xc,y)
-#	plt.xlabel("X-distance [m]")
-#	plt.ylabel("Y-distance [m]")
-#	plt.grid()
-#	plt.show()
