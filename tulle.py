@@ -1,10 +1,10 @@
-#calculate the length of a hanging strand
+#calculate the length of a hanging strand of weighted material
 
-# RectRoom object to hang fabric in
+# RectRoom object to hang material in
 class RectRoom(object):
     '''
         RectRoom(length,width,height,units='feet') initiates object that represents a 
-        rectangular room in which fabric will be hung in.
+        rectangular room in which material will be hung in.
         
         Automatically declares a midpoint of the room to hang fabric from as a 
         Hangpoint object: self.hangFrom
@@ -28,6 +28,7 @@ class Hangpoint(object):
 
 # Define a RectRoom (in feet)
 gym = RectRoom(length=92,width=68,height=22)
+
 #lengths are in feet
 L = 92; W=68; H=22; MidXY=(W/2,L/2)
 
@@ -44,12 +45,13 @@ def yardsToFeet(inYards):
     return inYards * 3.0
 
 #widthOfStrand is how wide the tulle piece (in feet)
-def findTotal(widthOfStrand,z=0,printTotal=False):
+def findTotal(widthOfStrand,z=0,room=gym,printTotal=False):
     '''
     Find total in yards.
     Input:
-        widthOfStrand (number of feet, width of tulle)
+        widthOfStrand (number of feet, width of material)
         z=0 (how many feet it will "drape" down linearly)
+        room=gym (RectRoom object to hang material in)
         printTotal=False (Friendly print)
 
     Output:
@@ -64,8 +66,9 @@ def findTotal(widthOfStrand,z=0,printTotal=False):
 
     #find along width
     alongWidth = 0
-    while(alongWidth <= W):
-        newX,newY = (MidXY[0] - alongWidth,MidXY[1]-L)
+    while(alongWidth <= room.width):
+        newX = room.hangFrom.x - alongWidth
+        newY = room.hangFrom.y - room.length
         # Length of strand needed (in yards)
         strandLength = calcLength(newX,newY,z)
         # Add Break point length
@@ -76,8 +79,9 @@ def findTotal(widthOfStrand,z=0,printTotal=False):
 
     #find along length, around gym
     alongLength = 0 
-    while(alongLength <= L):
-        newX,newY = (MidXY[0] - W,MidXY[1]- alongLength)
+    while(alongLength <= room.length):
+        newX = room.hangFrom.z - room.width
+        newY = room.hangFrom.y - alongLength
         # Length of strand needed (in yards)
         strandLength = calcLength(newX,newY,z)
         # Add Break point length
@@ -89,12 +93,12 @@ def findTotal(widthOfStrand,z=0,printTotal=False):
     #convert to yards
     total = feetToYards(total)
     strandLengths = map(feetToYards,strandLengths)
-    #all the strand lengths
-    strandLengths *=2 
+    # All the strand lengths and sorted
+    strandLengths *= 2; strandLengths.sort()
     if printTotal:
         print '\nTotal Length For Room: %.2f yards' %(2*total)
     # Return total length in yards and a list of strand lengths needed
-    return (2*total , strandLengths.sort())
+    return (2*total , strandLengths)
 
 def totalCost(costPerYard,widthOfStrandInFeet,drapingInFeet,printTotal=False):
     total = findTotal(widthOfStrandInFeet,drapingInFeet,printTotal)
