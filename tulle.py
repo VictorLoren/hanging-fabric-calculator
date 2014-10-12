@@ -3,21 +3,21 @@
 # RectRoom object to hang material in
 class RectRoom(object):
     '''
-        RectRoom(length,width,height,units='feet') initiates object that represents a 
-        rectangular room in which material will be hung in.
+        RectRoom(length,width,height,units='feet') initiates object that 
+        represents a rectangular room in which material will be hung in.
         
         Automatically declares a midpoint of the room to hang fabric from as a 
-        Hangpoint object: self.hangFrom
+        Point object: self.hangFrom
     '''
     def __init__(self,length,width,height,units='feet'):
         self.length = length
         self.width  = width
         self.height = height
-        self.hangFrom  = Hangpoint(width/2.0,length/2.0,float(height))
+        self.hangFrom  = Point(width/2.0,length/2.0,float(height))
         self.units  = units
 
-# Hangpoint object to represent where to hang material from/to
-class Hangpoint(object):
+# Point to represent some vertex in 3D space
+class Point(object):
     # Construct with 3 axes in mind
     def __init__(self,x,y,z=0):
        # Assign coordinates of the point for all three axes
