@@ -1,10 +1,18 @@
 #calculate the length of a hanging strand
 
-# RectRoom class
+# RectRoom object to hang fabric in
 class RectRoom(object):
+    '''
+        RectRoom(length,width) initiates object that represents a rectangular
+        room in which fabric will be hung in.
+        
+        Automatically declares a midpoint of the room to hang fabric from as a 
+        tuple (x,y): self.hangFrom
+    '''
     def __init__(self,length,width):
         self.length = length
-        self.width = width
+        self.width  = width
+        self.hangFrom  = (width/2.0,length/2.0)
 
 def calcLength(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
