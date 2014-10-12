@@ -5,7 +5,7 @@ import math
 import numpy as np 
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve  
-from inout import write_file
+#from inout import write_file
 
 
 def cat(a):
@@ -66,20 +66,20 @@ xb=-Lb
 # writting results to file
 fname='catenary_res.txt'
 fn=open(fname, 'a')
-write_file(fn, "Horizontal Distance between supports in meters: ", round(L,3))
-write_file(fn, "Catenary length in meters: ", round(S,3))
-write_file(fn, "Vertical Distance Between supports in meters: ", round(d,3))
-write_file(fn, "Unit Weight of Catenary line in kg/m: ", round(w,3))
-write_file(fn, "Elevation of higher support (A) from reference plane in meters: ", round(za,3))
-write_file(fn, "\Catenary coef.: ", round(a,5))
-write_file(fn, "Horizontal tension in kg (constant along line: ", round(H,3))
-write_file(fn, "Vertical tension in A in kg: ", round(Va,3))
-write_file(fn, "Total tension in A in kg: ", round(TA,3))
-write_file(fn, "Total tension in B in kg: ", round(TB,3))
-write_file(fn, "Inclination angle from vertical at A in radians: ", round(ThetA,3))
-write_file(fn, "Inclination angle from vertical at B in radians: ", round(ThetB,3))
-write_file(fn, "Inclination angle from vertical at A in degrees: ", round(ThetAd,3))
-write_file(fn, "Inclination angle from vertical at B in degrees: ", round(ThetBd,3))
+print fn, "Horizontal Distance between supports in meters: ", round(L,3)
+print fn, "Catenary length in meters: ", round(S,3)
+print fn, "Vertical Distance Between supports in meters: ", round(d,3)
+print fn, "Unit Weight of Catenary line in kg/m: ", round(w,3)
+print fn, "Elevation of higher support (A) from reference plane in meters: ", round(za,3)
+print fn, "\Catenary coef.: ", round(a,5)
+print fn, "Horizontal tension in kg (constant along line: ", round(H,3)
+print fn, "Vertical tension in A in kg: ", round(Va,3)
+print fn, "Total tension in A in kg: ", round(TA,3)
+print fn, "Total tension in B in kg: ", round(TB,3)
+print fn, "Inclination angle from vertical at A in radians: ", round(ThetA,3)
+print fn, "Inclination angle from vertical at B in radians: ", round(ThetB,3)
+print fn, "Inclination angle from vertical at A in degrees: ", round(ThetAd,3)
+print fn, "Inclination angle from vertical at B in degrees: ", round(ThetBd,3)
 fn.close()
 
 
