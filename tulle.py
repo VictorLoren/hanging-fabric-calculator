@@ -49,7 +49,24 @@ def findParabola(p0,p1,p2):
     # Solution array ... = arrS
     arrS = npArray([arr0[3],arr1[3],arr2[3]])
     coeff = solve(arrV,arrS)
+    # Give the parameters needed to construct parabola (a,b,c) for y=ax^2+bx+c
     return coeff
+
+# Find arc length of a parabola defined by three points given
+def findArcLength(fromPoint,toPoint,definePt):
+    # Rename the parameters given for brevity
+    p0,p1,p2 = fromPoint, toPoint, definePt
+    # Get the parameters that describe the parabola (ax^2+bx+c)
+    (a,b,c) = findParabola(p0,p1,p2)
+    print a,b,c
+    # Import basic integrating tool
+    from scipy.integrate import quad as integrate
+    # Function for the arc length integrand: Sqrt(1+[y']^2)
+    from numpy import sqrt
+    func = lambda x : sqrt( 1 + (2*a*x + b) * (2*a*x + b) )
+    # Integrate to find arc length
+    arcLength = integrate(func,p0.x,p1.x)
+    return arcLength
 
 def calcLength(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
