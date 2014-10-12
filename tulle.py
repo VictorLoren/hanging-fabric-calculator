@@ -1,4 +1,11 @@
-#calculate the length of a hangin strand
+#calculate the length of a hanging strand
+
+# RectRoom class
+class RectRoom(object):
+    def __init__(self,length,width):
+        self.length = length
+        self.width = width
+
 def calcLength(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
     # Basic calculation of strand length (assume a straight line) 
