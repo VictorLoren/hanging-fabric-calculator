@@ -13,7 +13,7 @@ class RectRoom(object):
         self.length = length
         self.width  = width
         self.height = height
-        self.hangFrom  = Point(width/2.0,length/2.0,float(height))
+        self.hangFrom = Point(width/2.0,length/2.0,float(height))
         self.units  = units
 
 # Point to represent some vertex in 3D space
@@ -86,6 +86,17 @@ def findArcLength(fromPoint,toPoint,definePt):
     arcLength = integrate(func,p0.x,p1.x)[0]
     return arcLength
 
+# Convert two 3D points to a 2D plane (keep z as y)
+def convertCoordinates(p0,p1):
+	from numpy import sqrt
+	# New Coordinates are x,y away from first
+	dx = p1.x - p0.x
+	dy = p1.y - p0.y
+	dz = p1.z - p0.z
+	x = sqrt(dx*dx + dy*dy)
+	y = dz
+	return (Point(0,0,0) , Point(x,y,0))
+
 def calcLength(startPt,endPt,detailPt):#(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
     # Basic calculation of strand length (assume a straight line) 
@@ -105,7 +116,7 @@ def findTotal(widthOfStrand,z=0,dOut=1,dUp=1,room=gym,printTotal=False):
     Find total in yards.
     Input:
         widthOfStrand (number of feet, width of material)
-        z=0 (how many feet it will "drape" down linearly)
+        z=0 (how many feet it will start from above the floor)
         dOut=1, dUp=1 (how many feet material drapes away from and above wall)
         room=gym (RectRoom object to hang material in)
         printTotal=False (Friendly print)
@@ -125,24 +136,15 @@ def findTotal(widthOfStrand,z=0,dOut=1,dUp=1,room=gym,printTotal=False):
     endPt = room.hangFrom #where the material will end at (ex hung in center)
 
     #find along width
-    fromPt = startPt #iniate in the corner
     alongWidth = 0
     while(alongWidth <= room.width):
-        #newX = room.hangFrom.x - alongWidth
-        #newY = room.hangFrom.y - room.length
-        # Length of strand needed (in yards)
-        #strandLength = calcLength(newX,newY,z)
-        ##
-   #####
-        fromPt += Point(alongWidth,0) #move start to the right
-        detailPt = fromPt + Point(dOut,0,dUp) # addjust detail to be out and up
+        fromPt = Point(alongWidth,0) + startPt #move start to the right
         # Find length (in 2D xz-plane)
-        p0 = Point(fromPt.x  , fromPt.z)
-        p1 = Point(endPt.x   , endPt.z)
-        p2 = Point(detailPt.x, detailPt.z)
-        print "Width:%f -> \t" %alongWidth, p0,p1,p2
+        # Convert the points to its own xy-plane
+        p0,p1 = convertCoordinates(fromPt,endPt) # Convert to its own xy-plane
+        p2 = p0 + Point(dOut,dUp) #get a point away from the start
         strandLength = calcLength(p0,p1,p2)
-   #####
+
         # Add Break point length
         strandLengths.append(strandLength)
         # Total length
@@ -153,20 +155,13 @@ def findTotal(widthOfStrand,z=0,dOut=1,dUp=1,room=gym,printTotal=False):
     fromPt = startPt #initiate in corner
     alongLength = 0 
     while(alongLength <= room.length):
-        #newX = room.hangFrom.z - room.width
-        #newY = room.hangFrom.y - alongLength
         # Length of strand needed (in yards)
-        #strandLength = calcLength(newX,newY,z)
-#####
-        fromPt += Point(0,alongLength) #move start along wall (down the length)
-        detailPt = fromPt + Point(0,dOut,dUp) # addjust detail to be out and up
-        #  Find length (in 2D xz-plane)
-        p0 = Point(fromPt.y  , fromPt.z)
-        p1 = Point(endPt.y   , endPt.z)
-        p2 = Point(detailPt.y, detailPt.z)
-        print "Length:%f ->\t " %alongLength, p0,p1,p2
+        fromPt = Point(0,alongLength) + startPt #move start along wall (down the length)
+        # Find length (in 2D xz-plane)
+        # Convert the points to its own xy-plane 
+        p0,p1 = convertCoordinates(fromPt,endPt) # Convert to its own xy-plane
+        p2 = p0 + Point(dOut,dUp) #get a point away from the start
         strandLength = calcLength(p0,p1,p2)
-#####
 
         # Add Break point length
         strandLengths.append(strandLength)
