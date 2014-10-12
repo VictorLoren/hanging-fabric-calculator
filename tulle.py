@@ -27,20 +27,23 @@ class Point(object):
     # Addition and subtraction
     def __add__(self,pt):
        return Point(self.x+pt.x,self.y+pt.y,self.z+pt.z)
-    def __iadd__(self,pt)
+    def __iadd__(self,pt):
        self.x += pt.x
        self.y += pt.y
        self.z += pt.z
        return self
     def __sub__(self,pt):
         return Point(self.x-pt.x,self.y-pt.y,self.z-pt.z)
-    def __iadd__(self,pt)
+    def __iadd__(self,pt):
         self.x -= pt.x
         self.y -= pt.y
         self.z -= pt.z
         return self
-    def __str__(self)
-        return self.pt
+    # Printing object
+    def __repr__(self):
+        return "(%f,%f,%f)" %(self.x,self.y,self.z)
+    def __str__(self):
+        return "(%f,%f,%f)" %(self.x,self.y,self.z)
 
 # Define a RectRoom (in feet)
 gym = RectRoom(length=92,width=68,height=22)
@@ -64,7 +67,6 @@ def findParabola(p0,p1,p2):
                     ])
     # Solution array ... = arrS
     arrS = npArray([arr0[3],arr1[3],arr2[3]])
-    print arrV , "\n", arrS
     coeff = solve(arrV,arrS)
     # Give the parameters needed to construct parabola (a,b,c) for y=ax^2+bx+c
     return coeff
@@ -75,20 +77,20 @@ def findArcLength(fromPoint,toPoint,definePt):
     p0,p1,p2 = fromPoint, toPoint, definePt
     # Get the parameters that describe the parabola (ax^2+bx+c)
     (a,b,c) = findParabola(p0,p1,p2)
-    print a,b,c
     # Import basic integrating tool
     from scipy.integrate import quad as integrate
     # Function for the arc length integrand: Sqrt(1+[y']^2)
     from numpy import sqrt
     func = lambda x : sqrt( 1 + (2*a*x + b) * (2*a*x + b) )
     # Integrate to find arc length
-    arcLength = integrate(func,p0.x,p1.x)
+    arcLength = integrate(func,p0.x,p1.x)[0]
     return arcLength
 
-def calcLength(x,y,z=0):
+def calcLength(startPt,endPt,detailPt):#(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
     # Basic calculation of strand length (assume a straight line) 
-    strandLength = (x**2 + y**2 + z**2)**0.5
+    #strandLength = (x**2 + y**2 + z**2)**0.5
+    strandLength = findArcLength(startPt,endPt,detailPt) 
     return strandLength
 
 def feetToYards(inFeet):
@@ -98,12 +100,13 @@ def yardsToFeet(inYards):
     return inYards * 3.0
 
 #widthOfStrand is how wide the tulle piece (in feet)
-def findTotal(widthOfStrand,z=0,room=gym,printTotal=False):
+def findTotal(widthOfStrand,z=0,dOut=1,dUp=1,room=gym,printTotal=False):
     '''
     Find total in yards.
     Input:
         widthOfStrand (number of feet, width of material)
         z=0 (how many feet it will "drape" down linearly)
+        dOut=1, dUp=1 (how many feet material drapes away from and above wall)
         room=gym (RectRoom object to hang material in)
         printTotal=False (Friendly print)
 
@@ -117,13 +120,29 @@ def findTotal(widthOfStrand,z=0,room=gym,printTotal=False):
     #Total length
     total = 0
 
+    # Point definitions
+    startPt  = Point(0,0,0) + Point(0,0,z) # raise the point up by z
+    endPt = room.hangFrom #where the material will end at (ex hung in center)
+
     #find along width
+    fromPt = startPt #iniate in the corner
     alongWidth = 0
     while(alongWidth <= room.width):
-        newX = room.hangFrom.x - alongWidth
-        newY = room.hangFrom.y - room.length
+        #newX = room.hangFrom.x - alongWidth
+        #newY = room.hangFrom.y - room.length
         # Length of strand needed (in yards)
-        strandLength = calcLength(newX,newY,z)
+        #strandLength = calcLength(newX,newY,z)
+        ##
+   #####
+        fromPt += Point(alongWidth,0) #move start to the right
+        detailPt = fromPt + Point(dOut,0,dUp) # addjust detail to be out and up
+        # Find length (in 2D xz-plane)
+        p0 = Point(fromPt.x  , fromPt.z)
+        p1 = Point(endPt.x   , endPt.z)
+        p2 = Point(detailPt.x, detailPt.z)
+        print "Width:%f -> \t" %alongWidth, p0,p1,p2
+        strandLength = calcLength(p0,p1,p2)
+   #####
         # Add Break point length
         strandLengths.append(strandLength)
         # Total length
@@ -131,12 +150,24 @@ def findTotal(widthOfStrand,z=0,room=gym,printTotal=False):
         alongWidth += widthOfStrand
 
     #find along length, around gym
+    fromPt = startPt #initiate in corner
     alongLength = 0 
     while(alongLength <= room.length):
-        newX = room.hangFrom.z - room.width
-        newY = room.hangFrom.y - alongLength
+        #newX = room.hangFrom.z - room.width
+        #newY = room.hangFrom.y - alongLength
         # Length of strand needed (in yards)
-        strandLength = calcLength(newX,newY,z)
+        #strandLength = calcLength(newX,newY,z)
+#####
+        fromPt += Point(0,alongLength) #move start along wall (down the length)
+        detailPt = fromPt + Point(0,dOut,dUp) # addjust detail to be out and up
+        #  Find length (in 2D xz-plane)
+        p0 = Point(fromPt.y  , fromPt.z)
+        p1 = Point(endPt.y   , endPt.z)
+        p2 = Point(detailPt.y, detailPt.z)
+        print "Length:%f ->\t " %alongLength, p0,p1,p2
+        strandLength = calcLength(p0,p1,p2)
+#####
+
         # Add Break point length
         strandLengths.append(strandLength)
         # Total length
