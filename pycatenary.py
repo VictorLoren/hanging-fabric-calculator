@@ -64,8 +64,8 @@ xp=0
 xb=-Lb
 
 # writting results to file
-fname='catenary_res.txt'
-fn=open(fname, 'a')
+#fname='catenary_res.txt'
+#fn=open(fname, 'a')
 print fn, "Horizontal Distance between supports in meters: ", round(L,3)
 print fn, "Catenary length in meters: ", round(S,3)
 print fn, "Vertical Distance Between supports in meters: ", round(d,3)
@@ -80,29 +80,29 @@ print fn, "Inclination angle from vertical at A in radians: ", round(ThetA,3)
 print fn, "Inclination angle from vertical at B in radians: ", round(ThetB,3)
 print fn, "Inclination angle from vertical at A in degrees: ", round(ThetAd,3)
 print fn, "Inclination angle from vertical at B in degrees: ", round(ThetBd,3)
-fn.close()
+#fn.close()
 
 
 # graphing catenary curve - matplotlib & writting coordinates in file 
-xinc=L/100
-y=[]
-xc=[]
-fncoords="catenary_coords.txt"
-fn=open(fncoords, "a")
-
-for x in np.arange (xb, xa+xinc, xinc):
-	ycal=a*math.cosh(x/a)
-	fn.write("\n")
-	fn.write(str(round(x,3)))
-	fn.write("\t")
-	fn.write(str(round(ycal[0],3)))
-	y.append(ycal)
-	xc.append(x)
-	fn.close()
-
-	# plotting, finally 
-	plt.plot(xc,y)
-	plt.xlabel("X-distance [m]")
-	plt.ylabel("Y-distance [m]")
-	plt.grid()
-	plt.show()
+#xinc=L/100
+#y=[]
+#xc=[]
+#fncoords="catenary_coords.txt"
+#fn=open(fncoords, "a")
+#
+#for x in np.arange (xb, xa+xinc, xinc):
+#	ycal=a*math.cosh(x/a)
+#	fn.write("\n")
+#	fn.write(str(round(x,3)))
+#	fn.write("\t")
+#	fn.write(str(round(ycal[0],3)))
+#	y.append(ycal)
+#	xc.append(x)
+#	fn.close()
+#
+#	# plotting, finally 
+#	plt.plot(xc,y)
+#	plt.xlabel("X-distance [m]")
+#	plt.ylabel("Y-distance [m]")
+#	plt.grid()
+#	plt.show()
