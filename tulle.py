@@ -29,8 +29,27 @@ class Hangpoint(object):
 # Define a RectRoom (in feet)
 gym = RectRoom(length=92,width=68,height=22)
 
-#lengths are in feet
-L = 92; W=68; H=22; MidXY=(W/2,L/2)
+# Find a matching parabola with 3 points in x-y-plane (only 3 ince deg(y)=1)
+def findParabola(p0,p1,p2):
+    # Always of the form y = a * x^2 + b * x + c
+    fcoeffs = lambda x,y : (x*x , x , 1, y)
+    # Map points to arrays of coeffecients (variable array, solution array) 
+    arr0 = fcoeffs(p0.x,p0.y)
+    arr1 = fcoeffs(p1.x,p1.y)
+    arr2 = fcoeffs(p2.x,p2.y)
+    # Solve system of equations
+    from numpy import array as npArray
+    from numpy.linalg import solve
+    # Varaible arrary
+    arrV = npArray([
+                    arr0[0:-1], 
+                    arr1[0:-1],
+                    arr2[0:-1]
+                    ])
+    # Solution array ... = arrS
+    arrS = npArray([arr0[3],arr1[3],arr2[3]])
+    coeff = solve(arrV,arrS)
+    return coeff
 
 def calcLength(x,y,z=0):
     #For better accuracy, will need to compute the droop (catenary)
