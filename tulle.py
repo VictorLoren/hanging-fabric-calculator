@@ -18,7 +18,7 @@ class RectRoom(object):
 
 # Hangpoint object to represent where to hang material from/to
 class Hangpoint(object):
-    #
+    # Construct with 3 axes in mind
     def __init__(self,x,y,z=0):
        # Assign coordinates of the point for all three axes
        (self.x, self.y, self.z) = (x,y,z)
