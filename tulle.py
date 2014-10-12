@@ -23,8 +23,24 @@ class Point(object):
        # Assign coordinates of the point for all three axes
        (self.x, self.y, self.z) = (x,y,z)
        # Shortcut to full position coordinates
-       self.position = (x,y,z)
-    
+       self.pt = (x,y,z)
+    # Addition and subtraction
+    def __add__(self,pt):
+       return Point(self.x+pt.x,self.y+pt.y,self.z+pt.z)
+    def __iadd__(self,pt)
+       self.x += pt.x
+       self.y += pt.y
+       self.z += pt.z
+       return self
+    def __sub__(self,pt):
+        return Point(self.x-pt.x,self.y-pt.y,self.z-pt.z)
+    def __iadd__(self,pt)
+        self.x -= pt.x
+        self.y -= pt.y
+        self.z -= pt.z
+        return self
+    def __str__(self)
+        return self.pt
 
 # Define a RectRoom (in feet)
 gym = RectRoom(length=92,width=68,height=22)
@@ -48,6 +64,7 @@ def findParabola(p0,p1,p2):
                     ])
     # Solution array ... = arrS
     arrS = npArray([arr0[3],arr1[3],arr2[3]])
+    print arrV , "\n", arrS
     coeff = solve(arrV,arrS)
     # Give the parameters needed to construct parabola (a,b,c) for y=ax^2+bx+c
     return coeff
