@@ -7,13 +7,13 @@ class RectRoom(object):
         rectangular room in which fabric will be hung in.
         
         Automatically declares a midpoint of the room to hang fabric from as a 
-        tuple (x,y): self.hangFrom
+        Hangpoint object: self.hangFrom
     '''
     def __init__(self,length,width,height,units='feet'):
         self.length = length
         self.width  = width
         self.height = height
-        self.hangFrom  = (width/2.0,length/2.0)
+        self.hangFrom  = Hangpoint(width/2.0,length/2.0,float(height))
         self.units  = units
 
 # Hangpoint object to represent where to hang material from/to
