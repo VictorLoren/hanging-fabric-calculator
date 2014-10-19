@@ -27,7 +27,7 @@ d_out, d_above = map(float,thirdPtStr.split(','))
 output = findTotal(widthOfStrand=strand, dOut=d_out,dUp= d_above,room=room)
 # Totals
 total_yds, strandList = output
-
+# Print out
 print "Total number of yards needed: %.2f" %total_yds
 
 
